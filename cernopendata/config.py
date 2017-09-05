@@ -143,8 +143,10 @@ RECORDS_REST_ENDPOINTS['artid'] = {
 RECORDS_REST_FACETS = dict(
     _all=dict(
         aggs=dict(
+            experiment=dict(terms=dict(field='collections.experiment')),
             category=dict(terms=dict(field='collections.secondary')),
             collections=dict(terms=dict(field='collections.primary')),
+            year=dict(terms=dict(field='collections.year')),
             run=dict(terms=dict(
                 field='production_publication_distribution_manufacture_and_'
                       'copyright_notice.'
