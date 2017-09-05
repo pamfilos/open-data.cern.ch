@@ -169,6 +169,51 @@ def news():
 
 @fixtures.command()
 @with_appcontext
+def vm():
+    """Load demo news records."""
+    from invenio_db import db
+    from invenio_records import Record
+    from invenio_indexer.api import RecordIndexer
+    from cernopendata.modules.records.minters.artid import cernopendata_articleid_minter
+
+    indexer = RecordIndexer()
+    schema = current_app.extensions['invenio-jsonschemas'].path_to_url(
+        'records/article-v1.0.0.json'
+    )
+    data = pkg_resources.resource_filename(
+        'cernopendata', 'modules')
+    articles_json = glob.glob(os.path.join(
+        data, 'fixtures', 'data', 'articles', 'vm', 'cms', '*.json'))
+
+    for filename in articles_json:
+        with open(filename, 'rb') as source:
+            for data in json.load(source):
+                assert data["body"]["content"]
+                md_source = os.path.join(pkg_resources.resource_filename(
+                    'cernopendata', 'modules'),
+                    'fixtures', 'data',
+                    'articles',
+                    'vm',
+                    'cms',
+                    data["body"]["content"]
+                )
+                with open(md_source) as body_field:
+                    data["body"]["content"] = body_field.read()
+                if not "collections" in data and \
+                   not isinstance(data.get("collections", None), basestring):
+                    data["collections"] = []
+                data["collections"].append({"primary": "Guide"})
+                id = uuid.uuid4()
+                cernopendata_articleid_minter(id, data)
+                record = Record.create(data, id_=id)
+                record['$schema'] = schema
+                db.session.commit()
+                indexer.index(record)
+                db.session.expunge_all()
+
+
+@fixtures.command()
+@with_appcontext
 def data_policies():
     """Load demo Data Policy records."""
     from invenio_db import db
