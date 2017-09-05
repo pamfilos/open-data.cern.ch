@@ -1,0 +1,38 @@
+{%- extends 'cernopendata_theme/page.html' %}
+
+{% from "macros/search_base.html" import search_component %}
+
+{%- block javascript %}
+  {{ super() }}
+  {% assets "invenio_search_ui_search_js" %}<script src="{{ ASSET_URL }}"></script>{% endassets %}
+
+  {# assets "cernopendata_theme_js" %}<script src="{{ ASSET_URL }}"></script>{% endassets #}
+  <script>
+    angular.module('invenioSearch').filter('unsafe', function($sce) { return $sce.trustAsHtml; });
+  </script>
+  {% assets "cernopendata_search_js" %}<script src="{{ ASSET_URL }}"></script>{% endassets %}
+{%- endblock javascript %}
+
+{%- block page_body %}
+<div class="container">
+  <h2>{{ collection.name }}</h2>
+  <hr>
+  <div class="row">
+    <div class="col-sm-12">
+      {% if collection.description %}
+      <h2>{{ collection.description }}. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laudantium officia praesentium hic, veritatis totam libero alias nostrum provident ex eaque quibusdam, saepe perspiciatis laboriosam nisi, asperiores eius excepturi qui voluptatibus.</h2>
+      <hr>
+      {% endif %}
+      {% for child_col in collection.children %}
+        <a href="{{ url_for('invenio_collections.collection', name=child_col.name)}}">{{ child_col.name }}</a> {{ "|" if not loop.last }}
+      {% endfor %}
+      <hr>
+
+      {{
+        search_component(config.SEARCH_UI_SEARCH_API+"?collections="+collection.name) }}
+    </div>
+  </div>
+</div>
+
+
+{%- endblock %}

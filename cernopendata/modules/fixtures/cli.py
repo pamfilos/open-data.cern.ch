@@ -51,7 +51,10 @@ def collections():
         """Create new collection."""
         for data in collections or []:
             collection = Collection(
-                name=data['name'], dbquery=data.get('dbquery'),
+                name=data['name'],
+                dbquery=data.get('dbquery'),
+                description=data.get('description', None),
+                thumb=data.get('thumb', None),
                 parent=parent
             )
             db.session.add(collection)
