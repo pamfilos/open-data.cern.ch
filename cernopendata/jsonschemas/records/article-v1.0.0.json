@@ -10,10 +10,6 @@
       "type": "string",
       "title": "Title"
     },
-    "type": {
-      "type": "string",
-      "title": "Type"
-    },
     "collections": {
       "type": "array",
       "items": {
@@ -21,9 +17,30 @@
         "title": "Collection"
       }
     },
+    "short_description": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type":"string"
+        },
+        "content": {
+          "type":"string"
+        }
+      }
+    },
     "body": {
-      "type": "string",
-      "title": "Body"
+      "type": "object",
+      "properties": {
+        "type": {
+          "type":"string"
+        },
+        "content": {
+          "type":"string"
+        }
+      }
+    },
+    "author": {
+      "type": "string"
     },
     "created": {
       "type": "string"

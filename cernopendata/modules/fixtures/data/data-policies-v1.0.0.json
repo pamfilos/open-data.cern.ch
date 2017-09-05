@@ -9,6 +9,7 @@
     ],
     "title": "LHCb External Data Access Policy",
     "collections": [
+      { "experiment": "LHCb" },
       { "primary": "Data-Policies" }
     ],
     "authors": {
@@ -16,7 +17,6 @@
       "affiliation": "U. Edinburgh"
     },
     "accelerator": "CERN LHC",
-    "experiment": "LHCb",
     "description": "5 p",
     "summary": "This document contains the LHCb Data Access Policy. This was adopted at the Collaboration Board meeting on 27th Feb 2013.",
     "collaboration": "LHCb collaboration",
